@@ -8,6 +8,7 @@
         <item name="actionModeStyle">@style/LStyled.ActionMode</item>
         <item name="actionMenuTextColor">@color/color_action_mode_text</item>  <!-- To change the text color of Delete inside CAB -->
         <item name="colorControlActivated">@color/single_row_selection_highlight</item>
+        <item name="windowActionModeOverlay">true</item>    <!-- overlaying toolabar when view are selected in list view -->
         <!-- Customize your theme here. -->
 
     </style>
