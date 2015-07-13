@@ -1,0 +1,43 @@
+<resources>
+
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+
+        <!-- Ishwor added these fields bitches -->
+        <item name="actionModeStyle">@style/LStyled.ActionMode</item>
+        <item name="actionMenuTextColor">@color/color_action_mode_text</item>  <!-- To change the text color of Delete inside CAB -->
+        <item name="colorControlActivated">@color/single_row_selection_highlight</item>
+        <!-- Customize your theme here. -->
+
+    </style>
+
+
+    <!-- Ishwor modified this part bitches!
+         change the ActionMode background through attribute actionModeStyle:
+    -->
+    <style name="LStyled.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="background">@color/color_action_mode_bg</item>
+    </style>
+
+
+
+
+    <!-- baley le dekhako kala haru -->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryCOlorDark</item>
+        <item name="colorAccent">@color/accentColor</item>
+        <item name="android:textColorPrimary">@color/primaryText</item>
+    </style>
+
+
+    <style name="MyAppBarTheme" parent="ThemeOverlay.AppCompat.Light">
+
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:textColorSecondary">#FFFFFF</item>
+
+    </style>
+
+
+</resources>

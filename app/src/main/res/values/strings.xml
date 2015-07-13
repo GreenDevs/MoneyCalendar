@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Money Calendar</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_add">Add</string>
+    <string name="hello_world">Hello world!</string>
+
+    <string name="graphIn">IN</string>
+    <string name="graphOut">OUT</string>
+    <string name="graphNet">NET</string>
+
+    <string name="inflow">INCOMING</string>
+    <string name="outflow">OUTGOING</string>
+
+    <string name="graphRefresh">Refresh</string>
+    <string name="delete">DELETE</string>
+
+
+    <string name="value_splash_movable_app_name">Money Calender</string>
+    <string name="title_activity_home">Money Calender</string>
+
+
+
+    <string name="value_splash_crack_dev_copyright"> © Crack Developerz</string>
+
+
+</resources>

@@ -1,0 +1,213 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="trees.money_calendar.com.moneycalander.AddActivity">
+
+   <include layout="@layout/tool_bar"
+       android:layout_height="wrap_content"
+       android:layout_width="match_parent"
+        />
+
+
+    <ScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="@color/materialWhite"
+        >
+
+
+           <LinearLayout
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/materialWhite"
+                >
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="right"
+                    android:orientation="horizontal"
+                    android:layout_marginRight="5dp"
+
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:text=""
+                        android:id="@+id/addYear"
+                        />
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:text=""
+                        android:maxLength="2"
+                        android:id="@+id/addMonth"
+                        />
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:text=""
+                        android:maxLength="2"
+                        android:id="@+id/addDay"
+                        />
+
+                    <Button
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="5dp"
+                        android:padding="5dp"
+                        android:id="@+id/timeButton"
+                        android:background="@drawable/clocked"
+                        android:layout_marginBottom="3dp"
+                        android:layout_gravity="bottom"
+
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Amount:"
+                        android:textColor="@color/primaryText"
+                        />
+
+                    <EditText
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="7"
+                        android:ems="7"
+                        android:id="@+id/addAmount"
+                        />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primaryText"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Category:"/>
+
+                    <Spinner
+                        android:id="@+id/spinnerCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/inOutRadioGroup"
+                        android:checkedButton="@+id/sound" >
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/outFlowRadio"
+                            android:textStyle="bold"
+                            android:checked="true"
+                            android:textColor="@color/flowOut"
+                            android:text="@string/outflow" />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/inFlowRadio"
+                            android:layout_marginLeft="20dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/flowIn"
+                            android:text="@string/inflow" />
+
+
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/desButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DSCRPTN"
+                    android:visibility="visible"
+                    android:padding="3dp"
+                    android:textColor="@color/materialWhite"
+                    android:background="@color/primaryColor"
+                    android:layout_marginLeft="10dp"
+                    />
+
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        android:inputType="text"
+                        android:visibility="gone"
+                        android:maxLength="50"
+                        android:hint=" max 50 chars"
+                        android:id="@+id/addDescription"
+
+                        />
+
+
+
+
+                <Button
+                    android:id="@+id/addButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ADD"
+                    android:textColor="@color/materialWhite"
+                    android:background="@color/primaryColor"
+
+                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="end"/>
+
+
+            </LinearLayout>
+
+
+
+
+    </ScrollView>
+
+
+</LinearLayout>

@@ -1,0 +1,93 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+
+    android:orientation="vertical"
+
+    tools:context=".MainActivity1">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+
+        android:layout_height="fill_parent">
+
+
+        <LinearLayout
+            android:id="@+id/viewToCover"
+            android:layout_width="fill_parent"
+            android:orientation="vertical"
+
+            android:layout_height="300dp"
+            android:background="#005060" />
+
+        <ImageView
+            android:id="@+id/viewToUnveal"
+            android:layout_width="300dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="300dp"
+            android:layout_below="@id/viewToCover"
+            android:src="@drawable/linechart" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:textSize="20dp"
+            android:text="@string/value_splash_crack_dev_copyright"
+            android:textColor="#005060" />
+
+    </RelativeLayout>
+
+
+    <FrameLayout
+        android:id="@+id/upeerpart"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:background="#005060"
+
+        android:padding="30dp">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="2">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="1"
+                android:src="@drawable/ic_launcher"
+
+                />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/logo"
+                android:layout_centerHorizontal="true"
+                android:shadowColor="#222222"
+                android:shadowDx="15"
+                android:shadowDy="15"
+                android:text="@string/value_splash_movable_app_name"
+
+                android:textColor="#ffffff"
+                android:textSize="30dp" />
+
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+
+</LinearLayout>

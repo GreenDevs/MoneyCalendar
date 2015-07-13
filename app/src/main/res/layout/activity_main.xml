@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/materialWhite"
+    tools:context=".MainActivity">
+
+      <include layout="@layout/tool_bar"
+          android:id="@+id/app_bar"/>
+
+    <trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.adapter.SlidingTabLayout
+        android:id="@+id/slidingTabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primaryColor"
+        android:layout_marginBottom="0dp"
+        android:elevation="5dp"
+
+        />
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"/>
+
+        <ImageButton
+            android:id="@+id/fabButton"
+            android:layout_width="@dimen/fab_button_diameter"
+            android:layout_height="@dimen/fab_button_diameter"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="@dimen/fab_button_margin_bottom"
+            android:layout_marginEnd="@dimen/fab_button_margin_right"
+            android:background="@drawable/fab_shape"
+            android:src="@mipmap/fab_ic_add"
+            android:tint="@android:color/white"/>
+
+    </FrameLayout>
+
+
+
+
+
+
+
+
+
+</LinearLayout>

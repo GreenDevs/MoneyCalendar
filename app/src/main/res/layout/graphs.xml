@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/graphFrag"
+    android:orientation="vertical"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/materialWhite"
+    >
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/inButton"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_margin="2dp"
+            android:background="@color/accentColor"
+            android:textColor="#fff"
+            android:text="@string/graphIn"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/outButton"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_margin="2dp"
+            android:background="@color/accentColor"
+            android:textColor="#fff"
+            android:text="@string/graphOut"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/netButton"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@color/accentColor"
+            android:textColor="#fff"
+            android:layout_width="0dp"
+            android:text="@string/graphNet"
+            android:layout_weight="1"/>
+    </LinearLayout>
+ -->
+
+    <android.support.v4.view.ViewPager
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewPager"
+
+        >
+
+    <android.support.v4.view.PagerTitleStrip
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_gravity="top"
+        android:layout_marginBottom="5dp"
+        android:background="@color/primaryColor"
+        android:id="@+id/titleStrip"
+        />
+
+    </android.support.v4.view.ViewPager>
+</LinearLayout>
