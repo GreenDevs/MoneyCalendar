@@ -35,6 +35,7 @@ public class Graph extends Fragment{
 
     private ViewPager viewPager;
     private PagerTitleStrip strip;
+    private GraphScrollAdapter adapter;
 
 
     @Override
@@ -52,15 +53,16 @@ public class Graph extends Fragment{
 
         strip=(PagerTitleStrip)v.findViewById(R.id.titleStrip);
         strip.setTextColor(getResources().getColor(R.color.materialWhite));
+        adapter=new GraphScrollAdapter(getActivity().getSupportFragmentManager());
         viewPager=(ViewPager)v.findViewById(R.id.viewPager);
-        viewPager.setAdapter(new GraphScrollAdapter(getActivity().getSupportFragmentManager()));
+        viewPager.setAdapter(adapter);
 
     }
 
-    public ViewPager getViewPagerDai()
-    {
-        return viewPager;
-    }
+//    public GraphScrollAdapter getViewPagerDai()
+//    {
+//        return adapter;
+//    }
 
 
 

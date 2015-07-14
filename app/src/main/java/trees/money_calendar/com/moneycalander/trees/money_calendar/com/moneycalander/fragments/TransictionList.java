@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+
+import trees.money_calendar.com.moneycalander.MainActivity;
 import trees.money_calendar.com.moneycalander.R;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.Class.SingleRow;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.adapter.TransListAdapter;
@@ -146,9 +148,12 @@ public class TransictionList extends Fragment implements AbsListView.MultiChoice
 
                     }
 
+
+
                 }
 
                mode.finish();
+//               ((MainActivity)getActivity()).getViewPager(1);
                return true;
 
             default:

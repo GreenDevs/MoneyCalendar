@@ -31,6 +31,8 @@
             <LinearLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:weightSum="3"
+                android:gravity="left"
                 android:orientation="horizontal">
 
                 <Spinner
@@ -38,6 +40,7 @@
                     android:id="@+id/selectYearOut"
                     android:layout_weight="1"
                     android:layout_width="0dp"
+                    android:layout_marginRight="5dp"
                     android:layout_height="wrap_content"/>
 
                 <Spinner
@@ -46,16 +49,6 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"/>
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/graphRefresh"
-                    android:id="@+id/refreshButtonOUT"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:textColor="@color/materialWhite"
-                    android:background="@color/primaryColor"
-                    />
             </LinearLayout>
 
 

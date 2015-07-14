@@ -3,24 +3,22 @@ package trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycal
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -33,43 +31,43 @@ import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycala
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.adapter.SelectMonthAdapter;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.adapter.SelectYearAdapter;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.DateAndTimeStamp;
+import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.Message;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.SQLiteAdapter;
 
 /**
  * Created by trees on 6/5/15.
  */
-public class OutGoing extends  Fragment  implements AdapterView.OnItemSelectedListener, View.OnClickListener
+public class OutGoing extends  Fragment  implements AdapterView.OnItemSelectedListener
 
 {
-//MPANDROID CHART
-private Map<Integer, Integer> dataMap;
-private Button refreshButton;
-private LinearLayout lineLl;
-private LineChart lineChart;
-private Context context;
-private LineDataSet dataSet;
-private ArrayList<Entry> entries;
-private LineData data;
-private ArrayList<String> labels;
-private Spinner spinnerYear, spinnerMonth;
-private int curntYea=Calendar.getInstance().get(Calendar.YEAR);
-private int currntMonth=Calendar.getInstance().get(Calendar.MONTH);
-private String[] yearList={curntYea-3+"",curntYea-2+"", curntYea-1+"", curntYea+""};
-private String year_month=curntYea+"/"+(currntMonth+1);
-private String graphStartDateInFormat=curntYea+"/"+(currntMonth+1)+"/1 00:00";
-private int year_index=3;
-private int month_index=currntMonth;
-private final static String GRAPH_LABLE="                  GRAPH OF  " ;
+    //MPANDROID CHART
+    private Map<Integer, Integer> dataMap;
+    private LinearLayout lineLl;
+    private LineChart lineChart;
+    private Context context;
+    private LineDataSet dataSet;
+    private ArrayList<Entry> entries;
+    private LineData data;
+    private ArrayList<String> labels;
+    private Spinner spinnerYear, spinnerMonth;
+    private int curntYea=Calendar.getInstance().get(Calendar.YEAR);
+    private int currntMonth=Calendar.getInstance().get(Calendar.MONTH);
+    private String[] yearList={curntYea-3+"",curntYea-2+"", curntYea-1+"", curntYea+""};
+    private String year_month=curntYea+"/"+(currntMonth+1);
+    private String graphStartDateInFormat=curntYea+"/"+(currntMonth+1)+"/1 00:00";
+    private int year_index=3;
+    private int month_index=currntMonth;
+    private final static String GRAPH_LABLE="                      GRAPH OF  " ;
 
-// private LineChart lineChart;
-private Map<Integer, String> catMap;
-private int groceryPcnt,  foodPcnt,   shopPcnt, educationPcnt,
-        maintainPcnt, personPct, healthPcnt, entertainPcnt,
-        travelPcnt,    savePcnt,   homePcnt, miscelloPcnt;
+    // private LineChart lineChart;
+    private Map<Integer, String> catMap;
+    private int groceryPcnt,  foodPcnt,   shopPcnt, educationPcnt,
+            maintainPcnt, personPct, healthPcnt, entertainPcnt,
+            travelPcnt,    savePcnt,   homePcnt, miscelloPcnt;
 
 
-private static final int IN_OUT_FLAG=0;
-private int screenWidht=0;
+    private static final int IN_OUT_FLAG=0;
+    private int screenWidht=0;
 
 
 
@@ -80,9 +78,9 @@ private int screenWidht=0;
         View l1 ,l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12;
 
 
-@Nullable
-@Override
-public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
 
         View v=inflater.inflate(R.layout.outgoing_layout, container, false);
@@ -95,13 +93,10 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle sa
 //#################################   GRPAH INITIALIZEER ########################################
 
 
-private void graphInitialize(View v)
+    private void graphInitialize(View v)
         {
 
         context=getActivity();
-        refreshButton=(Button)v.findViewById(R.id.refreshButtonOUT);
-        refreshButton.setOnClickListener(this);
-
         spinnerYear = (Spinner)v.findViewById(R.id.selectYearOut);
         spinnerYear.setAdapter(new SelectYearAdapter(getActivity(), R.layout.year_sel_row, yearList));
         spinnerYear.setOnItemSelectedListener(this);
@@ -139,7 +134,7 @@ private void graphInitialize(View v)
         dataSet.setColor(getResources().getColor(R.color.outgoingColor));
         data=new LineData(labels, dataSet);
         lineChart.setData(data);
-        lineChart.animateY(3000);
+        lineChart.animateY(3000, Easing.EasingOption.EaseInBounce);
         lineChart.getXAxis().setDrawGridLines(false);
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getAxis(YAxis.AxisDependency.RIGHT).setDrawGridLines(false);
@@ -156,7 +151,7 @@ private void graphInitialize(View v)
 
         }
 
-private void initCategoryViews(View v)
+    private void initCategoryViews(View v)
         {
         cat1=(ImageView)v.findViewById(R.id.cat1Image);
         n1=(TextView)v.findViewById(R.id.cat1Name);
@@ -232,7 +227,7 @@ private void initCategoryViews(View v)
         }
 
 
-private void fillAllCordinates(SortedSet<Integer> sortedKeys)
+    private void fillAllCordinates(SortedSet<Integer> sortedKeys)
         {
 
         int x=0, y=0;
@@ -248,7 +243,7 @@ private void fillAllCordinates(SortedSet<Integer> sortedKeys)
 
 ///############################## RETURN SCREEN WIDTH ###############################################
 
-private int getScreenWidth()
+    private int getScreenWidth()
         {
 
         Display display=getActivity().getWindowManager().getDefaultDisplay();
@@ -259,7 +254,7 @@ private int getScreenWidth()
 
 //###############################  SETTTING ALL CATEGORY PERCENTAGE ###################################
 
-private void setCatPercent(String year_month)
+    private void setCatPercent(String year_month)
         {
 
         SQLiteAdapter adapter=new SQLiteAdapter(getActivity());
@@ -323,7 +318,7 @@ private void setCatPercent(String year_month)
 ////#################################  SETTING ALL THE VIEW OF #######################################
 
 
-private void setCatView(View v)
+    private void setCatView(View v)
         {
 
         SortedSet<Integer> sortedKeys=new TreeSet<Integer>(catMap.keySet());
@@ -450,7 +445,7 @@ private void setCatView(View v)
 
 ///########################## RESOLVE RESOURCES OF A CATEGORY ######################################
 
-private int resolveIcon(String category)
+    private int resolveIcon(String category)
         {
 
         switch (category)
@@ -477,7 +472,7 @@ private int resolveIcon(String category)
 
 //########################################## NORMALIZE THE ONE MONTH VALUE INTO 31 VALUES #######################################
 
-private Map<Integer, Integer> normalizeMapFromDatabase(Map<Integer, Integer> map, String graphStartDate)
+    private Map<Integer, Integer> normalizeMapFromDatabase(Map<Integer, Integer> map, String graphStartDate)
         {
         Integer startTimeStamp=(int)(DateAndTimeStamp.returnTimeStamp(graphStartDate));
 
@@ -494,36 +489,38 @@ private Map<Integer, Integer> normalizeMapFromDatabase(Map<Integer, Integer> map
         }
 
 
-@Override
-public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+    {
+
+
+        if(parent.getId()==R.id.selectYearOut)
         {
-//        spinnerCalledcounter++;
-//
-//        if(spinnerCalledcounter>2)
-//        {
-        if(parent.getId()==R.id.selectYearOut) {
-        year_index = position;
+          year_index = position;
         }
 
 
-        if(parent.getId()==R.id.selectMonthOut) {
+        if(parent.getId()==R.id.selectMonthOut)
+        {
         month_index = position;
 
         }
-//        }
 
-        }
+        refreshGraph();
 
-@Override
-public void onNothingSelected(AdapterView<?> parent)
+
+}
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent)
         {
         month_index=currntMonth;
         year_index=0;
 
         }
 
-@Override
-public void onClick(View v)
+
+    public void refreshGraph()
         {
 
         year_month=yearList[year_index]+"/"+(month_index+1);
@@ -553,7 +550,7 @@ public void onClick(View v)
         dataSet.setColor(getResources().getColor(R.color.outgoingColor));
         data=new LineData(labels, dataSet);
         lineChart.setData(data);
-        lineChart.animateY(3000);
+        lineChart.animateY(3000, Easing.EasingOption.EaseInBounce);
         lineChart.getXAxis().setDrawGridLines(false);
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getAxis(YAxis.AxisDependency.RIGHT).setDrawGridLines(false);
@@ -566,7 +563,15 @@ public void onClick(View v)
 
 
         }
-        }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        refreshGraph();
+    }
+
+}
 
 
 

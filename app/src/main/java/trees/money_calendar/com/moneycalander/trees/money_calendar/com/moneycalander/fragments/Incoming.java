@@ -3,24 +3,22 @@ package trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycal
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -33,17 +31,17 @@ import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycala
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.adapter.SelectMonthAdapter;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.adapter.SelectYearAdapter;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.DateAndTimeStamp;
+import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.Message;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.SQLiteAdapter;
 
 /**
  * Created by trees on 6/5/15.
  */
-public class Incoming extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener
+public class Incoming extends Fragment implements AdapterView.OnItemSelectedListener
 
 {
     //MPANDROID CHART
     private Map<Integer, Integer> dataMap;
-    private Button refreshButton;
     private LinearLayout lineLl;
     private LineChart lineChart;
     private Context context;
@@ -59,7 +57,7 @@ public class Incoming extends Fragment implements AdapterView.OnItemSelectedList
     private String graphStartDateInFormat=curntYea+"/"+(currntMonth+1)+"/1 00:00";
     private int year_index=3;
     private int month_index=currntMonth;
-    private final static String GRAPH_LABLE="                  GRAPH OF  " ;
+    private final static String GRAPH_LABLE="                     GRAPH OF  " ;
 
     // private LineChart lineChart;
     private Map<Integer, String> catMap;
@@ -80,7 +78,6 @@ public class Incoming extends Fragment implements AdapterView.OnItemSelectedList
     View l1 ,l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12;
 
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -99,9 +96,6 @@ public class Incoming extends Fragment implements AdapterView.OnItemSelectedList
     {
 
         context=getActivity();
-        refreshButton=(Button)v.findViewById(R.id.refreshButtonIN);
-        refreshButton.setOnClickListener(this);
-
         spinnerYear = (Spinner)v.findViewById(R.id.selectYear);
         spinnerYear.setAdapter(new SelectYearAdapter(getActivity(), R.layout.year_sel_row, yearList));
         spinnerYear.setOnItemSelectedListener(this);
@@ -139,7 +133,7 @@ public class Incoming extends Fragment implements AdapterView.OnItemSelectedList
         dataSet.setColor(getResources().getColor(R.color.incomingColor));
         data=new LineData(labels, dataSet);
         lineChart.setData(data);
-        lineChart.animateY(3000);
+        lineChart.animateY(3000, Easing.EasingOption.EaseInBounce);
         lineChart.getXAxis().setDrawGridLines(false);
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getAxis(YAxis.AxisDependency.RIGHT).setDrawGridLines(false);
@@ -512,6 +506,8 @@ public class Incoming extends Fragment implements AdapterView.OnItemSelectedList
             }
 //        }
 
+       refreshGraph();
+
     }
 
     @Override
@@ -522,12 +518,12 @@ public class Incoming extends Fragment implements AdapterView.OnItemSelectedList
 
     }
 
-    @Override
-    public void onClick(View v)
+
+    public void refreshGraph()
     {
 
-            year_month=yearList[year_index]+"/"+(month_index+1);
-            graphStartDateInFormat=year_month+"/1 00:00";
+        year_month=yearList[year_index]+"/"+(month_index+1);
+        graphStartDateInFormat=year_month+"/1 00:00";
 
         dataMap=new HashMap<Integer, Integer>();
         SQLiteAdapter sqLiteAdapter=new SQLiteAdapter(getActivity());
@@ -554,7 +550,7 @@ public class Incoming extends Fragment implements AdapterView.OnItemSelectedList
         dataSet.setColor(getResources().getColor(R.color.incomingColor));
         data=new LineData(labels, dataSet);
         lineChart.setData(data);
-        lineChart.animateY(3000);
+        lineChart.animateY(3000, Easing.EasingOption.EaseInBounce);
         lineChart.getXAxis().setDrawGridLines(false);
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getAxis(YAxis.AxisDependency.RIGHT).setDrawGridLines(false);
@@ -566,6 +562,29 @@ public class Incoming extends Fragment implements AdapterView.OnItemSelectedList
         lineLl.addView(lineChart);
 
 
+    }
+
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+//        Message.message(context, "on resume");
+        refreshGraph();
+    }
+
+    @Override
+    public void onPause()
+    {
+
+        super.onPause();
+//        Message.message(context , "on pause");
+    }
+
+
+    public void inCome()
+    {
+        Message.message(context , "2 min pani ");
     }
 }
 

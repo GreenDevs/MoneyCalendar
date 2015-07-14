@@ -2,6 +2,7 @@ package trees.money_calendar.com.moneycalander;
 
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycala
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.DateAndTimeStamp;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.Message;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.SQLiteAdapter;
+import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.fragments.Graph;
+import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.fragments.Incoming;
 
 /*
  *This is the main activity of the application that has three basic components
@@ -138,6 +141,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
 
     }
+
+//    public void getViewPager(int pos)
+//    {
+//        Graph graphFrag=(Graph)pagerAdapter.getItem(1);
+//        Incoming inFrag=(Incoming)graphFrag.getViewPagerDai().getItem(1);
+//        inFrag.inCome();
+//    }
 
 
 
