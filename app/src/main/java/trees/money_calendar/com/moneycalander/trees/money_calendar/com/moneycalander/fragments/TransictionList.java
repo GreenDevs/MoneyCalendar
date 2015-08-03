@@ -164,7 +164,39 @@ public class TransictionList extends Fragment implements AbsListView.MultiChoice
     public void triggerEditSwitch()
     {
 
+        databaseAdapter=new SQLiteAdapter(context);
+        long id=0;
+        long time_stamp=0;
+        byte in_or_out=0;
+
+
+        SparseBooleanArray selected = transListAdapter.getSelectedIds();        //calls getSelectedIds method from listView adapter class.
+        for (int i = (selected.size() - 1); i >= 0; i--)                        //captures all selected ids with a loop
+        {
+            if (selected.valueAt(i))
+            {
+                SingleRow selectedItem = (SingleRow) transListAdapter.getItem(selected.keyAt(i));
+                                        // remove selected items following the ids.
+                //getting the database uid
+                id=selectedItem.getId();
+
+                //############ MONTHLY TABLE UPDATE ####################
+                time_stamp= DateAndTimeStamp.returnTimeStamp(selectedItem.getDate()+" 00:00");
+                if(selectedItem.getFlow().equals("IN")) in_or_out=1;
+                else in_or_out=0;
+//                databaseAdapter.updateIntoMonthlyTable(in_or_out, time_stamp, amount);
+
+
+            }
+
+        }
+
+        Bundle bundle=new Bundle();
+        bundle.putLong("uid", id);
+        bundle.putLong("time_stamp", time_stamp);
+        bundle.putByte("in_or_out", in_or_out);
         Intent intent=new Intent(context,EditActivity.class);
+        intent.putExtra("maalkobundle", bundle);
         startActivity(intent);
         //idTransmission.transmit(11,999999990,0);
     }

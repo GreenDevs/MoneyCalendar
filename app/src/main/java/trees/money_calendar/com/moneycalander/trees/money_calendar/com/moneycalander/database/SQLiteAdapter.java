@@ -192,6 +192,61 @@ public class SQLiteAdapter
     }
 
 
+    public String getDataFromDailyTable(long filterId)
+    {
+        SQLiteDatabase db=sqLiteHelper.getWritableDatabase();
+
+//     select  Date, Category, Amount, Description from Table -> Incoming.
+        String[] allColumnsFrom_tableDaily={SQLiteHelper.UID,SQLiteHelper.DATE_TIME,SQLiteHelper.CATEGORY,SQLiteHelper.AMOUNT,SQLiteHelper.DESCRIPTION,SQLiteHelper.IN_OR_OUT};
+        Cursor cursor=db.rawQuery("SELECT * FROM "+SQLiteHelper.TABLE_NAME_DAILY+" WHERE "+SQLiteHelper.UID+" = "+filterId+" ;",null);
+
+
+        ///////////////////////////////
+        String date,category,amount,description,inOut="OUT";
+        int uid, columnIndex_uid, columnIndex_date, columnIndex_category, columnIndex_Amount, columnIndex_Description, columnIndex_INOUT;
+        int in_or_out;
+        StringBuffer selectedTuple=new StringBuffer();
+
+
+        columnIndex_uid=cursor.getColumnIndex(sqLiteHelper.UID); //  gives index of UID i.e =0;
+        columnIndex_date=cursor.getColumnIndex(sqLiteHelper.DATE_TIME);
+        columnIndex_category=cursor.getColumnIndex(sqLiteHelper.CATEGORY);
+        columnIndex_Amount=cursor.getColumnIndex(sqLiteHelper.AMOUNT);
+        columnIndex_Description=cursor.getColumnIndex(sqLiteHelper.DESCRIPTION);
+        columnIndex_INOUT=cursor.getColumnIndex(sqLiteHelper.IN_OR_OUT);
+
+        while(cursor.moveToNext())
+        {
+//            fetching index of corresponding table table attributes.
+
+
+//            Retrieving values associated to the corresponding columnIndex of database table -one row at a time.
+            uid=cursor.getInt(columnIndex_uid);
+            date=cursor.getString(columnIndex_date);
+            category=cursor.getString(columnIndex_category);
+            amount=cursor.getString(columnIndex_Amount);
+            description=cursor.getString(columnIndex_Description);
+            in_or_out=cursor.getInt(columnIndex_INOUT);
+
+            //Message.message_longTime(context, description+" "+in_or_out+"\n");
+            if(in_or_out==1)
+                inOut="IN";
+            else
+                inOut="OUT";
+
+            selectedTuple.append(amount+":"+date+":"+category+":"+description+":"+inOut);
+
+
+        }
+
+        Message.message(context, selectedTuple.toString());
+        db.close();
+        cursor.close();
+
+        return selectedTuple.toString();
+    }
+
+
 
     public int getAllCategoryFromDailyTable(String cat, int in_out_flag, String year_month)
     {

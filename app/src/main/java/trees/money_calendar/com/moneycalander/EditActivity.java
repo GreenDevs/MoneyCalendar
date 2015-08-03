@@ -2,6 +2,7 @@ package trees.money_calendar.com.moneycalander;
 
 
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -80,11 +81,36 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         initialize();
+        initializeViewFromDatabase();
     }
 
 
 
 
+    private void initializeViewFromDatabase()
+    {
+        SQLiteAdapter adapter=new SQLiteAdapter(this);
+
+        Bundle maalHaru=getIntent().getBundleExtra("maalkobundle");
+        byte in_or_out=maalHaru.getByte("in_or_out", (byte) 0);
+        long id=maalHaru.getLong("uid");
+        long time_stamp=maalHaru.getLong("time_stamp");
+        String[] obtainedTuple=adapter.getDataFromDailyTable(id).split(":");
+        if(obtainedTuple!=null)
+        {
+            amount.setText(obtainedTuple[0]);
+            year.setText(obtainedTuple[1].split("/")[0]);
+            month.setText(obtainedTuple[1].split("/")[1]);
+            days.setText(obtainedTuple[1].split("/")[2]);
+            spinner.setSelection(CategoryClass.getCategoryPosition(obtainedTuple[2]));
+            description.setText(obtainedTuple[3]);
+            if(obtainedTuple[4].equals("IN")) inFlowRadio.setChecked(true);
+            else outFlowRadio.setChecked(true);
+
+        }
+
+
+    }
 
 
     private void initialize()
