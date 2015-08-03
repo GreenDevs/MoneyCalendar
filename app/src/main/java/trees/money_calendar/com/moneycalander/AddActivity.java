@@ -28,7 +28,6 @@ import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycala
 public class AddActivity extends ActionBarActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener
 {
 
-
     /*
     *
     * THIS ACTIVITY IS USED TO TAKE THE ENTRY FROM 0630189A 2055/12/27 USER.. USER HAS TO INSERT AMOUNT COMPUSALYLY REST FIELDS ARE OPTIONAL.
