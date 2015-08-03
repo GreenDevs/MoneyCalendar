@@ -61,13 +61,21 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
     ////JUST INITIALIZATION OF ALL THE VIEWS AND REQUIRED REFRENCES
     private RadioButton inFlowRadio, outFlowRadio;
     private Spinner spinner;
-    private Button addButton, desButton, timeButton;
+    private Button editButton, desButton, timeButton;
     private EditText days, month, year, amount, description;
     private String categoryName;
     private Toolbar appBar;
     private TimePickerFragment timeFragment;
     private Calendar c;
-    private int curntYr,curntMnth, curntDays, in_or_out;
+    private int curntYr,curntMnth, curntDays, in_or_out, previousInOut, newPrimaryKey, previousPrimaryKey;
+    private long uId=0;
+    private long timeStamp=0;
+    private long previousTimeStamp=0;
+    private boolean watchClicked=false;
+    private String previousDate="";
+    private String previousYear_Month="";
+    private String previousAmount="";
+    private String previousTime="";
 
 
 
@@ -92,25 +100,32 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
         SQLiteAdapter adapter=new SQLiteAdapter(this);
 
         Bundle maalHaru=getIntent().getBundleExtra("maalkobundle");
-        byte in_or_out=maalHaru.getByte("in_or_out", (byte) 0);
-        long id=maalHaru.getLong("uid");
-        long time_stamp=maalHaru.getLong("time_stamp");
-        String[] obtainedTuple=adapter.getDataFromDailyTable(id).split(":");
+        previousInOut=maalHaru.getByte("in_or_out", (byte) 0);
+        uId=maalHaru.getLong("uid");
+        previousTimeStamp=maalHaru.getLong("time_stamp");
+        String[] obtainedTuple=adapter.getDataFromDailyTable(uId).split("//");
         if(obtainedTuple!=null)
         {
-            amount.setText(obtainedTuple[0]);
-            year.setText(obtainedTuple[1].split("/")[0]);
-            month.setText(obtainedTuple[1].split("/")[1]);
-            days.setText(obtainedTuple[1].split("/")[2]);
+            previousAmount=obtainedTuple[0];
+            amount.setText(previousAmount);
+            previousDate=obtainedTuple[1];
+            year.setText(previousDate.split("/")[0]);
+            month.setText(previousDate.split("/")[1]);
+            days.setText(previousDate.split("/")[2]);
             spinner.setSelection(CategoryClass.getCategoryPosition(obtainedTuple[2]));
             description.setText(obtainedTuple[3]);
             if(obtainedTuple[4].equals("IN")) inFlowRadio.setChecked(true);
             else outFlowRadio.setChecked(true);
-
+            previousTime=obtainedTuple[5];
+            previousYear_Month=year.getText().toString()+"/"+month.getText().toString();
         }
 
 
+
+
+
     }
+
 
 
     private void initialize()
@@ -126,20 +141,20 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
         outFlowRadio = (RadioButton) findViewById(R.id.outFlowRadio);
 
 
-
-        ///DATE PARTS
         days = (EditText) findViewById(R.id.addDay);            days.setText(""+curntDays);         //Setting
         month = (EditText)findViewById(R.id.addMonth);          month.setText(""+curntMnth);        //Date Edit Text
         year = (EditText) findViewById(R.id.addYear);           year.setText(curntYr+"");           //By the current date
         amount = (EditText)findViewById(R.id.addAmount);
 
 
+        ///DATE PARTS
+
 
         ////BUTTON PARTS
-        addButton=(Button)findViewById(R.id.addButton);
+        editButton=(Button)findViewById(R.id.editButton);
         desButton=(Button)findViewById(R.id.desButton);
         timeButton=(Button)findViewById(R.id.timeButton);
-        addButton.setOnClickListener(this);
+        editButton.setOnClickListener(this);
         desButton.setOnClickListener(this);
         timeButton.setOnClickListener(this);
 
@@ -347,7 +362,7 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
     public void onClick(View v)
     {
 
-        if(v.getId()==R.id.addButton)
+        if(v.getId()==R.id.editButton)
         {
             if(validation())
             {
@@ -359,10 +374,14 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
                 String dscrptn=description.getText().toString();
                 if(inFlowRadio.isChecked()) in_or_out=1;
                 if(outFlowRadio.isChecked()) in_or_out=0;
-                String time=" "+c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE);   //By default time variable store current hour and minutes
+                String time=previousTime;                                       //By default time variable store current hour and minutes
                 if(timeFragment!=null) time=timeFragment.getTime();            //getting time from the timeFragment Because user sets the time in this fragment
                 //if user has set timeFragment will not be null and it contains user set time values
 
+                long newTimeStamp=DateAndTimeStamp.returnTimeStamp(date+time);
+
+                if(watchClicked || !(previousDate.equals(date))) timeStamp=newTimeStamp;
+                else  timeStamp=previousTimeStamp;
 
                /*
                ######################DATABSE ENTRY PART########################
@@ -370,10 +389,11 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
 
 
                 SQLiteAdapter dbAdapter=new SQLiteAdapter(this);
-                dbAdapter.insertIntoDailyTable(amnt, categoryName, dscrptn, date, in_or_out,DateAndTimeStamp.returnTimeStamp(date+time), year_month);
-                dbAdapter.insertIntoMonthlyTable(amnt, DateAndTimeStamp.returnTimeStamp(date+" 00:00"), in_or_out, year_month);;
-                // Message.message(this, date+time);
+                dbAdapter.updateDailyTable(amnt, categoryName, dscrptn, date, in_or_out, timeStamp, year_month, uId);
+                dbAdapter.insertIntoMonthlyTable("-"+previousAmount, previousTimeStamp, previousInOut, previousYear_Month);
+                dbAdapter.insertIntoMonthlyTable(amnt, newTimeStamp, in_or_out, year_month);
 
+//                Message.message(this, "time="+time);
 
 
                 ///CLEANING ALL THE FILELDS ARD RESETTING THEM TO DEFAULT VALUES AFTER USER ENTRY
@@ -404,6 +424,7 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
 
         if(v.getId()==R.id.timeButton)
         {
+            watchClicked=true;
             timeFragment=new TimePickerFragment();
             timeFragment.show(getSupportFragmentManager(), "TIME PICKER");
 

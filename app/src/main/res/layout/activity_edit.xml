@@ -191,14 +191,14 @@
 
 
             <Button
-                android:id="@+id/addButton"
+                android:id="@+id/editButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ADD"
+                android:text="EDIT"
                 android:textColor="@color/materialWhite"
                 android:background="@color/primaryColor"
 
-                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_gravity="end"/>
 
 

@@ -344,7 +344,7 @@ public class AddActivity extends ActionBarActivity implements View.OnClickListen
 
 
                 SQLiteAdapter dbAdapter=new SQLiteAdapter(this);
-                dbAdapter.insertIntoDailyTable(amnt, categoryName, dscrptn, date, in_or_out,DateAndTimeStamp.returnTimeStamp(date+time), year_month);
+                dbAdapter.insertIntoDailyTable(amnt, categoryName, dscrptn, date, in_or_out,DateAndTimeStamp.returnTimeStamp(date+time), year_month, time);
                 dbAdapter.insertIntoMonthlyTable(amnt, DateAndTimeStamp.returnTimeStamp(date+" 00:00"), in_or_out, year_month);;
                // Message.message(this, date+time);
 

@@ -39,19 +39,19 @@ public class DateAndTimeStamp
     }
 
 
-    public static String returnDate(long timeStamp)
+    public static void returnDate(long timeStamp)
     {
 
         try
         {
-            DateFormat dateFormat=new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            Date date=(new Date(timeStamp));
-            return dateFormat.format(date);
+            Timestamp stamp = new Timestamp(timeStamp);
+            Date date = new Date(stamp.getTime());
+            Log.i("time_stamp", date.toString());
         }
         catch(Exception e)
         {
             e.printStackTrace();
-            return "0000-00-00";
+//            return "0000-00-00";
         }
 
     }
