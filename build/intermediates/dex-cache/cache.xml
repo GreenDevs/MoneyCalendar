@@ -2,46 +2,46 @@
 <items version="2" >
 
     <item
-        jar="/home/trees/AndroidStudioProjects/Money-Cal-final/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="a3ff3c506644c820eb2bdf06e8339f72be578551">
-        <dex dex="/home/trees/AndroidStudioProjects/Money-Cal-final/app/build/intermediates/pre-dexed/debug/classes-d9f52ad695cca87f0126503a7978bc72729aed4c.jar" />
-    </item>
-    <item
-        jar="/home/trees/AndroidStudioProjects/Money-Cal-final/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="c95ba8152923e4872e86a82cfcba9a51c0214328">
-        <dex dex="/home/trees/AndroidStudioProjects/Money-Cal-final/app/build/intermediates/pre-dexed/debug/classes-284817107faca0b989ccbf50ebeb0f9651e513c4.jar" />
-    </item>
-    <item
-        jar="/home/trees/.gradle/caches/modules-2/files-2.1/com.github.PhilJay/MPAndroidChart/v2.1.0/ec46f9251e1e0ee60e1b6beae8b16f2e0fdee474/MPAndroidChart-v2.1.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="ec46f9251e1e0ee60e1b6beae8b16f2e0fdee474">
-        <dex dex="/home/trees/AndroidStudioProjects/Money-Cal-final/app/build/intermediates/pre-dexed/debug/MPAndroidChart-v2.1.0-ad00024aadc4e9bc28811d8eb208371ea04ae4ff.jar" />
-    </item>
-    <item
-        jar="/home/trees/.gradle/caches/modules-2/files-2.1/com.androidplot/androidplot-core/0.6.1/3db0daea52375b26bfa61c59b8df93950bdefbbc/androidplot-core-0.6.1.jar"
+        jar="/home/script/.gradle/caches/modules-2/files-2.1/com.androidplot/androidplot-core/0.6.1/3db0daea52375b26bfa61c59b8df93950bdefbbc/androidplot-core-0.6.1.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="3db0daea52375b26bfa61c59b8df93950bdefbbc">
-        <dex dex="/home/trees/AndroidStudioProjects/Money-Cal-final/app/build/intermediates/pre-dexed/debug/androidplot-core-0.6.1-68dc8f4ea672146ef66324fa9c9ee5ec1d73b429.jar" />
+        <dex dex="/media/earth/workspace/moneycalendar/app/build/intermediates/pre-dexed/debug/androidplot-core-0.6.1-c04dab75519363e059e103f19aeac28d74c852c4.jar" />
     </item>
     <item
-        jar="/home/trees/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/22.1.1/support-annotations-22.1.1.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="01d051a6bfb1218b1db2d3a5af0480ac2c25c42a">
-        <dex dex="/home/trees/AndroidStudioProjects/Money-Cal-final/app/build/intermediates/pre-dexed/debug/support-annotations-22.1.1-ba667882f388854a8f003c7b0f85df84465a4fc8.jar" />
-    </item>
-    <item
-        jar="/home/trees/AndroidStudioProjects/Money-Cal-final/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/libs/internal_impl-22.1.1.jar"
+        jar="/media/earth/workspace/moneycalendar/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/libs/internal_impl-22.1.1.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="9e070ad32b2700b0343e8e0cccc437733d91ba3a">
-        <dex dex="/home/trees/AndroidStudioProjects/Money-Cal-final/app/build/intermediates/pre-dexed/debug/internal_impl-22.1.1-6d72186b43f7ac4f084364d4812a91ab9cacd230.jar" />
+        <dex dex="/media/earth/workspace/moneycalendar/app/build/intermediates/pre-dexed/debug/internal_impl-22.1.1-44ba08ab46af9337ac476aa678b3da855e62e0a3.jar" />
+    </item>
+    <item
+        jar="/media/earth/workspace/moneycalendar/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="a3ff3c506644c820eb2bdf06e8339f72be578551">
+        <dex dex="/media/earth/workspace/moneycalendar/app/build/intermediates/pre-dexed/debug/classes-51d8ffc40aeeb393407b69d2f2d489da3fd76de9.jar" />
+    </item>
+    <item
+        jar="/home/script/.gradle/caches/modules-2/files-2.1/com.github.PhilJay/MPAndroidChart/v2.1.0/ec46f9251e1e0ee60e1b6beae8b16f2e0fdee474/MPAndroidChart-v2.1.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="ec46f9251e1e0ee60e1b6beae8b16f2e0fdee474">
+        <dex dex="/media/earth/workspace/moneycalendar/app/build/intermediates/pre-dexed/debug/MPAndroidChart-v2.1.0-337706c0faeadae99162a232621f04af87883f0c.jar" />
+    </item>
+    <item
+        jar="/home/script/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/22.1.1/support-annotations-22.1.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="01d051a6bfb1218b1db2d3a5af0480ac2c25c42a">
+        <dex dex="/media/earth/workspace/moneycalendar/app/build/intermediates/pre-dexed/debug/support-annotations-22.1.1-88677a1257e3f3eac6b8d1ae90eb72c403c9acf8.jar" />
+    </item>
+    <item
+        jar="/media/earth/workspace/moneycalendar/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c95ba8152923e4872e86a82cfcba9a51c0214328">
+        <dex dex="/media/earth/workspace/moneycalendar/app/build/intermediates/pre-dexed/debug/classes-db94a2b05ac658a9d127947a33fe768fa0377cd5.jar" />
     </item>
 
 </items>
