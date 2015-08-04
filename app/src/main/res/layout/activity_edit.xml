@@ -141,9 +141,9 @@
 
             <Button
                 android:id="@+id/editButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/add50"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/tick50"
                 android:layout_marginRight="10dp"
                 android:layout_gravity="end"/>
 

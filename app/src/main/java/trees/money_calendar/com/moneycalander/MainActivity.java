@@ -149,6 +149,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        inFrag.inCome();
 //    }
 
+    public ImageButton getFab()
+    {
+        return fabButton;
+    }
+
 
 
 }

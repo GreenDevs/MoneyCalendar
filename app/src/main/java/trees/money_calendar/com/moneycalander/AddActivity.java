@@ -2,6 +2,7 @@ package trees.money_calendar.com.moneycalander;
 
 
 
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -370,6 +372,9 @@ public class AddActivity extends ActionBarActivity implements View.OnClickListen
                 year.setText(curntYr+"");
                 month.setText(curntMnth+"");
                 days.setText(curntDays+"");
+
+                InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
                 Message.message(this, "ADDED SUCCESSFULLY");
 

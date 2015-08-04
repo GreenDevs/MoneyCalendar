@@ -14,13 +14,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import trees.money_calendar.com.moneycalander.EditActivity;
+import trees.money_calendar.com.moneycalander.MainActivity;
 import trees.money_calendar.com.moneycalander.R;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.Class.SingleRow;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.adapter.TransListAdapter;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.DateAndTimeStamp;
+import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.Message;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.SQLiteAdapter;
 
 /**
@@ -86,6 +90,15 @@ public class TransictionList extends Fragment implements AbsListView.MultiChoice
     {
         Log.d("Tag","onItemCheckedStateChanged() called");
 
+        ImageButton fabButton=fabButton=((MainActivity) getActivity()).getFab();;
+        if(list.getCheckedItemCount()>0)
+        {
+            if(fabButton!=null) fabButton.setVisibility(View.GONE);
+        }
+        else
+        {
+            if(fabButton!=null) fabButton.setVisibility(View.VISIBLE);
+        }
         if(list.getCheckedItemCount()==1)
         {
             mode.getMenu().getItem(EDIT_MENU_ITEM_INDEX).setVisible(true);
