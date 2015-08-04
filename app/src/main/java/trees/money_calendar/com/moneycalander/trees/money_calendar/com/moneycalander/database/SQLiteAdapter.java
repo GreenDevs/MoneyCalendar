@@ -141,7 +141,9 @@ public class SQLiteAdapter
         }
 
         cursor.close();
-        String updatedAmount=(Integer.parseInt(datBaseAmount)-Integer.parseInt(reciveAmnt))+"";
+        int dataBaseAmountinInteger=Integer.parseInt(datBaseAmount);
+        int recievedAmountinInteger=Integer.parseInt(reciveAmnt);
+        String updatedAmount=(dataBaseAmountinInteger-recievedAmountinInteger)+"";
         String args[]={Long.toString(time_stamp), in_or_out+""};
         ContentValues contentValues=new ContentValues();
         contentValues.put(SQLiteHelper.AMOUNT, updatedAmount);
@@ -262,7 +264,7 @@ public class SQLiteAdapter
 
         }
 
-        Message.message(context, selectedTuple.toString());
+//        Message.message(context, selectedTuple.toString());
         db.close();
         cursor.close();
 

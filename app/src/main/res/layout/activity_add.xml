@@ -164,13 +164,9 @@
 
                 <Button
                     android:id="@+id/desButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="DSCRPTN"
-                    android:visibility="visible"
-                    android:padding="3dp"
-                    android:textColor="@color/materialWhite"
-                    android:background="@color/primaryColor"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/description50"
                     android:layout_marginLeft="10dp"
                     />
 
@@ -192,13 +188,10 @@
 
                 <Button
                     android:id="@+id/addButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ADD"
-                    android:textColor="@color/materialWhite"
-                    android:background="@color/primaryColor"
-
-                    android:layout_marginEnd="10dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/add50"
+                    android:layout_marginRight="10dp"
                     android:layout_gravity="end"/>
 
 

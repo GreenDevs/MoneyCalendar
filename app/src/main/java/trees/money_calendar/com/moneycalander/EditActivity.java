@@ -1,12 +1,9 @@
 package trees.money_calendar.com.moneycalander;
 
 
-
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,14 +13,11 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import java.util.Calendar;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.Class.CategoryClass;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.adapter.CategoryAdapter;
-import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.DateAndTimeStamp;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.Message;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.SQLiteAdapter;
-import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.fragments.TimePickerFragment;
 
 
 public class EditActivity extends ActionBarActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener
@@ -79,16 +73,14 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
      */
     private RadioButton inFlowRadio, outFlowRadio;
     private Spinner spinner;
-    private Button editButton, desButton, timeButton;
-    private EditText days, month, year, amount, description;
+    private Button editButton, desButton;
+    private EditText amount, description;
     private String categoryName;
     private Toolbar appBar;
-    private TimePickerFragment timeFragment;
     private Calendar c;
-    private int curntYr,curntMnth, curntDays, in_or_out, previousInOut;
+    private int in_or_out, previousInOut;
     private long uId=0;
     private long previousTimeStamp=0;
-    private boolean watchClicked=false;
     private String previousDate="";
     private String previousYear_Month="";
     private String previousAmount="";
@@ -121,21 +113,21 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
         previousInOut=maalHaru.getByte("in_or_out", (byte) 0);
         previousTimeStamp=maalHaru.getLong("time_stamp");
         String[] obtainedTuple=adapter.getDataFromDailyTable(uId).split("//");
-
+        String year, month, days;
         if(obtainedTuple!=null)
         {
             previousAmount=obtainedTuple[0];
             amount.setText(previousAmount);
             previousDate=obtainedTuple[1];
-            year.setText(previousDate.split("/")[0]);
-            month.setText(previousDate.split("/")[1]);
-            days.setText(previousDate.split("/")[2]);
+            year=(previousDate.split("/")[0]);
+            month=(previousDate.split("/")[1]);
+            days=(previousDate.split("/")[2]);
             spinner.setSelection(CategoryClass.getCategoryPosition(obtainedTuple[2]));
             description.setText(obtainedTuple[3]);
             if(obtainedTuple[4].equals("IN")) inFlowRadio.setChecked(true);
             else outFlowRadio.setChecked(true);
             previousTime=obtainedTuple[5];
-            previousYear_Month=year.getText().toString()+"/"+month.getText().toString();
+            previousYear_Month=year+"/"+month;
         }
 
 
@@ -149,19 +141,10 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
     private void initialize()
     {
 
-        //CURRENT DATE ATTRIBUTES AND VALUES
-        c=Calendar.getInstance();
-        curntYr=c.get(Calendar.YEAR);
-        curntMnth=c.get(Calendar.MONTH); curntMnth++;         ///CURRENT MONTTH IS INCREASED BY ONE BECAUSE CALENDAR INDEXS MONTH FROM 0
-        curntDays=c.get(Calendar.DAY_OF_MONTH);
+
         description = (EditText) findViewById(R.id.addDescription);
         inFlowRadio = (RadioButton) findViewById(R.id.inFlowRadio);
         outFlowRadio = (RadioButton) findViewById(R.id.outFlowRadio);
-
-
-        days = (EditText) findViewById(R.id.addDay);            days.setText(""+curntDays);         //Setting
-        month = (EditText)findViewById(R.id.addMonth);          month.setText(""+curntMnth);        //Date Edit Text
-        year = (EditText) findViewById(R.id.addYear);           year.setText(curntYr+"");           //By the current date
         amount = (EditText)findViewById(R.id.addAmount);
 
 
@@ -171,10 +154,8 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
         ////BUTTON PARTS
         editButton=(Button)findViewById(R.id.editButton);
         desButton=(Button)findViewById(R.id.desButton);
-        timeButton=(Button)findViewById(R.id.timeButton);
         editButton.setOnClickListener(this);
         desButton.setOnClickListener(this);
-        timeButton.setOnClickListener(this);
 
 
         //SPINNER PARTS
@@ -202,146 +183,6 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
 
         boolean flag=true;  //this flag is used to return flag depeding upon the data given by user
 
-
-        /*
-        *   ######################## DAY VALIDATION ###############################
-        *
-        *   ->Check if the day is null, or empty If empty or null then simply it
-        *       changes the hint of day to "empty"
-        *
-        *   ->If not empty and not null then do further validation
-        *
-        *   ->Then pull data from date edit text for comparison.. If days lies in between 0 and current date
-        *       then it is valid
-        *       else
-        *       Check other conditions
-        *                  -> if entered month and current month is not same then it is valid with days greater
-        *                     than current days and text color as black
-        *                     else
-        *                     setText as in red color
-        *
-         */
-
-        if(days!=null && !days.getText().toString().equals(""))
-        {
-            int dys = Integer.parseInt(days.getText().toString());
-            if(dys>0 &&  dys<=curntDays)
-            {
-                days.setTextColor(this.getResources().getColor(R.color.primaryText));
-            }
-            else
-            {
-                int mnts=0;
-                if(month!=null && !month.getText().toString().equals(""))
-                {
-                    mnts = Integer.parseInt(month.getText().toString());
-                }
-
-                if(mnts!=curntMnth && dys<32 && dys>0)
-                {
-                    days.setTextColor(this.getResources().getColor(R.color.primaryText));
-                }
-                else
-                {
-                    days.setTextColor(this.getResources().getColor(R.color.flowOut));
-                    flag = false;
-                }
-            }
-        }
-        else
-        {
-            days.setHint("dd");
-            flag=false;
-        }
-
-
-
-        /*
-        *
-        * ######################## MONTH VALIDATION ################################
-        *
-        * ->Ist checking month if it is null or empty if true changing hint as empty
-        *      else
-        *      then taking the months value and checking the range within 0 and current month
-        *       if true "then it is valid"
-        *      else
-        *      then checking year.. if year=currentyear-1 and entered month lies in between 0 and 13
-        *       then it is valid
-        *       else
-        *       setting text color red
-         */
-
-        if(month!=null && !month.getText().toString().equals(""))
-        {
-
-
-            int mnts = Integer.parseInt(month.getText().toString());
-            if(mnts>0 &&  mnts<=curntMnth)
-            {
-                month.setTextColor(this.getResources().getColor(R.color.primaryText));
-            }
-            else
-            {
-                int yr=0;
-
-                if(year!=null && !year.getText().toString().equals(""))
-                {
-                    yr = Integer.parseInt(year.getText().toString());
-                }
-                if(curntMnth<=2 && yr==curntYr-1 && mnts>0 && mnts<=12)
-                {
-                    Log.i("YEAR", "2014");
-                    month.setTextColor(this.getResources().getColor(R.color.primaryText));
-                }
-                else {
-                    month.setTextColor(this.getResources().getColor(R.color.flowOut));
-                    flag = false;
-                }
-            }
-        }
-        else
-        {
-            month.setHint("mm");
-            flag=false;
-        }
-
-
-
-        /*
-        *
-        * ########################## YEAR VALIDATION ################################
-        *
-        * ->Checking year if it is empty or null if true set year color red
-        *   else
-        *   take the year value and set true only if entered year is equal to
-        *   current year or if entered year is less than by 1 of current year if the current moth<=2
-         */
-        if(year!=null && !year.getText().toString().equals(""))
-        {
-
-
-
-            int yr = Integer.parseInt(year.getText().toString());
-            if(yr!=curntYr)
-            {
-                if (yr == curntYr - 1 && curntMnth <= 2 )
-                {
-                    year.setTextColor(this.getResources().getColor(R.color.primaryText));
-                }
-                else
-                {
-                    year.setTextColor(this.getResources().getColor(R.color.flowOut));
-                    flag = false;
-                }
-            }
-            else
-                year.setTextColor(this.getResources().getColor(R.color.primaryText));
-        }
-        else
-        {
-            year.setHint("yyyy");
-            flag=false;
-        }
 
 
         if(amount==null || amount.getText().toString().equals(""))
@@ -386,31 +227,16 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
             {
                 long timeStamp=0;
                 //setting a data string variable from the user enetered values
-                int month_index=Integer.parseInt(month.getText().toString());
-                String year_month=year.getText()+"/"+month_index;
-                String date=year_month+"/"+days.getText().toString();
                 String amnt=amount.getText().toString();
                 String dscrptn=description.getText().toString();
                 if(inFlowRadio.isChecked()) in_or_out=1;
                 if(outFlowRadio.isChecked()) in_or_out=0;
-                String time=previousTime;                                       //By default time variable store current hour and minutes
-                if(timeFragment!=null) time=timeFragment.getTime();            //getting time from the timeFragment Because user sets the time in this fragment
-                //if user has set timeFragment will not be null and it contains user set time values
-
-                long newTimeStamp=DateAndTimeStamp.returnTimeStamp(date+time);   //If any changges on date has beeen made newTimeStamp will store the value
-
-                if(previousTimeStamp!=newTimeStamp) timeStamp=newTimeStamp;   //if timeStampNot same update timestamp else old timestamp
-                else  timeStamp=previousTimeStamp;
-
-               /*
-               ######################DATABSE ENTRY PART########################
-                */
 
 
                 SQLiteAdapter dbAdapter=new SQLiteAdapter(this);
 
                 //this line is used to update the data on daily table
-                dbAdapter.updateDailyTable(amnt, categoryName, dscrptn, date, in_or_out, timeStamp, year_month, uId);
+                dbAdapter.updateDailyTable(amnt, categoryName, dscrptn, previousDate, in_or_out, timeStamp, previousYear_Month, uId);
 
                 /*these two lines will update the monthtly table
                 *
@@ -419,19 +245,8 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
                  */
 
 
-                dbAdapter.insertIntoMonthlyTable("-"+previousAmount, previousTimeStamp, previousInOut, previousYear_Month);
-                dbAdapter.insertIntoMonthlyTable(amnt, newTimeStamp, in_or_out, year_month);
-
-//                Message.message(this, "time="+time);
-
-
-//                ///CLEANING ALL THE FILELDS ARD RESETTING THEM TO DEFAULT VALUES AFTER USER ENTRY
-//                description.setText("");
-//                amount.setText("");
-//                if(timeFragment!=null) timeFragment.resetTime();
-//                year.setText(curntYr+"");
-//                month.setText(curntMnth+"");
-//                days.setText(curntDays+"");
+                dbAdapter.updateIntoMonthlyTable(previousInOut, previousTimeStamp,  previousAmount);
+                dbAdapter.updateIntoMonthlyTable(in_or_out, previousTimeStamp, "-"+amnt);
 
                 Message.message(this, "EDITED SUCCESSFULLY");
                 this.finish();
@@ -449,15 +264,6 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
         {
             description.setVisibility(View.VISIBLE);
             desButton.setVisibility(View.GONE);
-
-        }
-
-        if(v.getId()==R.id.timeButton)
-        {
-            watchClicked=true;
-            timeFragment=new TimePickerFragment();
-            timeFragment.show(getSupportFragmentManager(), "TIME PICKER");
-
 
         }
 
