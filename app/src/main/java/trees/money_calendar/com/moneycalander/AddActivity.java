@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import java.util.Calendar;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.Class.CategoryClass;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.adapter.CategoryAdapter;
@@ -56,6 +55,20 @@ public class AddActivity extends ActionBarActivity implements View.OnClickListen
     * *
      */
 
+
+
+    //VARIABLE INTRODUCTION
+    /*
+    **
+    * -> radiobuttons: inflow and outflow are used to hold the incoming or outgoing money flag
+    * ->spinner: it is used to show the category listing
+    * ->addButton: for confirming add event, desButton: to trigger the description option, timeButton: for time picker
+    * ->EditText: year, month, days is used to make date:year/month/days, description: used to keep the description
+    * ->categoryName: used to keep the selected category of spinner
+    * ->appbar: this is used to put the app bar  in the app
+    * ->timeFragment: it is used to refer the time picker and take the time value set by it
+    * ->currentYr, curntMnth, curntDays, are used to store the current year month and current days
+*/
 
     ////JUST INITIALIZATION OF ALL THE VIEWS AND REQUIRED REFRENCES
     private RadioButton inFlowRadio, outFlowRadio;

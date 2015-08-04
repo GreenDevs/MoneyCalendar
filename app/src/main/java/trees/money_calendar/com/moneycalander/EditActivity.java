@@ -31,7 +31,7 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
 
     /*
     *
-    * THIS ACTIVITY IS USED TO TAKE THE ENTRY FROM 0630189A 2055/12/27 USER.. USER HAS TO INSERT AMOUNT COMPUSALYLY REST FIELDS ARE OPTIONAL.
+    * THIS ACTIVITY IS USED TO EDIT THE ENTRY FROM  THE USER.. USER CAN EDIT FIELDS .
     * AMOUNT, CATEGORY, INFLOW OR OUTFLOW, DATE, TIME, DESCRIPTION ARE THE FIELDS
     *
     * THIS Activity has folowing methods
@@ -55,10 +55,28 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
     *
     * This method only returns a category name on selection of the spinner item
     * *
+    * 5)initializeViewFromDatabase()
+    * This method gets the intent from another activity. and the intent has the UID, TIME_STAMP and In_Or_Out.
+     * which helps from taking the previous data of the item in list clicked to be editable
      */
 
 
-    ////JUST INITIALIZATION OF ALL THE VIEWS AND REQUIRED REFRENCES
+    //VARIABLE INTRODUCTION
+    /*
+    **
+    * -> radiobuttons: inflow and outflow are used to hold the incoming or outgoing money flag
+    * ->spinner: it is used to show the category listing
+    * ->editButton: for confirming edit option, desButton: to trigger the description option, timeButton: for time picker
+    * ->EditText: year, month, days is used to make date:year/month/days, description: used to keep the description
+    * ->categoryName: used to keep the selected category of spinner
+    * ->appbar: this is used to put the app bar  in the app
+    * ->timeFragment: it is used to refer the time picker and take the time value set by it
+    * ->currentYr, curntMnth, curntDays, are used to store the current year month and current days
+    * ->in_or_out is flag that stores incoming or outgoing value, previousInOrOut hold previous in our selection
+    * ->uId is used to take the primary key of the selected row on the list
+    * ->previousTimeStamp stores the time stamp of the selected list item
+     * ->similar previous values are stored on previousDate, previousYearMonth, previousAmount, previousTime;
+     */
     private RadioButton inFlowRadio, outFlowRadio;
     private Spinner spinner;
     private Button editButton, desButton, timeButton;
@@ -67,9 +85,8 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
     private Toolbar appBar;
     private TimePickerFragment timeFragment;
     private Calendar c;
-    private int curntYr,curntMnth, curntDays, in_or_out, previousInOut, newPrimaryKey, previousPrimaryKey;
+    private int curntYr,curntMnth, curntDays, in_or_out, previousInOut;
     private long uId=0;
-    private long timeStamp=0;
     private long previousTimeStamp=0;
     private boolean watchClicked=false;
     private String previousDate="";
@@ -100,10 +117,11 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
         SQLiteAdapter adapter=new SQLiteAdapter(this);
 
         Bundle maalHaru=getIntent().getBundleExtra("maalkobundle");
-        previousInOut=maalHaru.getByte("in_or_out", (byte) 0);
         uId=maalHaru.getLong("uid");
+        previousInOut=maalHaru.getByte("in_or_out", (byte) 0);
         previousTimeStamp=maalHaru.getLong("time_stamp");
         String[] obtainedTuple=adapter.getDataFromDailyTable(uId).split("//");
+
         if(obtainedTuple!=null)
         {
             previousAmount=obtainedTuple[0];
@@ -366,10 +384,11 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
         {
             if(validation())
             {
+                long timeStamp=0;
                 //setting a data string variable from the user enetered values
                 int month_index=Integer.parseInt(month.getText().toString());
                 String year_month=year.getText()+"/"+month_index;
-                String date=year.getText().toString()+"/"+(month_index)+"/"+days.getText().toString();
+                String date=year_month+"/"+days.getText().toString();
                 String amnt=amount.getText().toString();
                 String dscrptn=description.getText().toString();
                 if(inFlowRadio.isChecked()) in_or_out=1;
@@ -378,9 +397,9 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
                 if(timeFragment!=null) time=timeFragment.getTime();            //getting time from the timeFragment Because user sets the time in this fragment
                 //if user has set timeFragment will not be null and it contains user set time values
 
-                long newTimeStamp=DateAndTimeStamp.returnTimeStamp(date+time);
+                long newTimeStamp=DateAndTimeStamp.returnTimeStamp(date+time);   //If any changges on date has beeen made newTimeStamp will store the value
 
-                if(watchClicked || !(previousDate.equals(date))) timeStamp=newTimeStamp;
+                if(previousTimeStamp!=newTimeStamp) timeStamp=newTimeStamp;   //if timeStampNot same update timestamp else old timestamp
                 else  timeStamp=previousTimeStamp;
 
                /*
@@ -389,22 +408,33 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
 
 
                 SQLiteAdapter dbAdapter=new SQLiteAdapter(this);
+
+                //this line is used to update the data on daily table
                 dbAdapter.updateDailyTable(amnt, categoryName, dscrptn, date, in_or_out, timeStamp, year_month, uId);
+
+                /*these two lines will update the monthtly table
+                *
+                * ist line reduces the amount that was previously stored on a tuple
+                * 2nd line insertes the newamount on the new tuple of monthly table
+                 */
+
+
                 dbAdapter.insertIntoMonthlyTable("-"+previousAmount, previousTimeStamp, previousInOut, previousYear_Month);
                 dbAdapter.insertIntoMonthlyTable(amnt, newTimeStamp, in_or_out, year_month);
 
 //                Message.message(this, "time="+time);
 
 
-                ///CLEANING ALL THE FILELDS ARD RESETTING THEM TO DEFAULT VALUES AFTER USER ENTRY
-                description.setText("");
-                amount.setText("");
-                if(timeFragment!=null) timeFragment.resetTime();
-                year.setText(curntYr+"");
-                month.setText(curntMnth+"");
-                days.setText(curntDays+"");
+//                ///CLEANING ALL THE FILELDS ARD RESETTING THEM TO DEFAULT VALUES AFTER USER ENTRY
+//                description.setText("");
+//                amount.setText("");
+//                if(timeFragment!=null) timeFragment.resetTime();
+//                year.setText(curntYr+"");
+//                month.setText(curntMnth+"");
+//                days.setText(curntDays+"");
 
-                Message.message(this, "ADDED SUCCESSFULLY");
+                Message.message(this, "EDITED SUCCESSFULLY");
+                this.finish();
 
             }
             else
