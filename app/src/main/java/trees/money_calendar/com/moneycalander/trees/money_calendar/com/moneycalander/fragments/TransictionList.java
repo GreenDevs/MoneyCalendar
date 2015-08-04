@@ -39,6 +39,8 @@ public class TransictionList extends Fragment implements AbsListView.MultiChoice
     private SQLiteAdapter databaseAdapter;
     private static final byte EDIT_MENU_ITEM_INDEX=1;
     public static final String EDIT_DIALOG_TAG="edit_dialog_tag";
+    private ImageButton fabButton=null;
+
 
 
     @Nullable
@@ -69,6 +71,8 @@ public class TransictionList extends Fragment implements AbsListView.MultiChoice
         list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         list.setMultiChoiceModeListener(this);               //Capture listView item click.
 
+        fabButton=((MainActivity) getActivity()).getFab();
+
 
     }
 
@@ -90,7 +94,6 @@ public class TransictionList extends Fragment implements AbsListView.MultiChoice
     {
         Log.d("Tag","onItemCheckedStateChanged() called");
 
-        ImageButton fabButton=fabButton=((MainActivity) getActivity()).getFab();;
         if(list.getCheckedItemCount()>0)
         {
             if(fabButton!=null) fabButton.setVisibility(View.GONE);
@@ -256,6 +259,9 @@ public class TransictionList extends Fragment implements AbsListView.MultiChoice
     {
 
         transListAdapter.removeSelection();
+
+        fabButton.setVisibility(View.VISIBLE);
+
 
     }
 }
