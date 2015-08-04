@@ -28,7 +28,7 @@ public class SQLiteAdapter
         sqLiteHelper=new SQLiteHelper(context);
     }
 
-    public long insertIntoDailyTable(String amount,String category,String description,String date,int in_or_out, long time_stamp, String year_month)
+    public long insertIntoDailyTable(String amount,String category,String description,String date,int in_or_out, long time_stamp, String year_month, String time)
     {
 
         SQLiteDatabase db=sqLiteHelper.getWritableDatabase();
@@ -41,6 +41,7 @@ public class SQLiteAdapter
         contentValues.put(SQLiteHelper.IN_OR_OUT, in_or_out);
         contentValues.put(SQLiteHelper.TIME_STAMP, time_stamp);
         contentValues.put(SQLiteHelper.YEAR_MONTH, year_month);
+        contentValues.put(SQLiteHelper.TIME, time);
 
 
 
@@ -50,6 +51,25 @@ public class SQLiteAdapter
         return id;
     }
 
+    public  void updateDailyTable(String amount,String category,String description,String date,int in_or_out, long time_stamp, String year_month, long uid)
+    {
+
+        SQLiteDatabase db=sqLiteHelper.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(SQLiteHelper.AMOUNT, amount);
+        contentValues.put(SQLiteHelper.CATEGORY, category);
+        contentValues.put(SQLiteHelper.DESCRIPTION, description);
+        contentValues.put(SQLiteHelper.DATE_TIME, date);
+        contentValues.put(SQLiteHelper.IN_OR_OUT, in_or_out);
+        contentValues.put(SQLiteHelper.TIME_STAMP, time_stamp);
+        contentValues.put(SQLiteHelper.YEAR_MONTH, year_month);
+        String args[]={Long.toString(uid)};
+
+        db.update(SQLiteHelper.TABLE_NAME_DAILY, contentValues, SQLiteHelper.UID + "=? ", args);
+//        Message.message(context, "time stamp="+time_stamp+"  in_or_out_flag="+in_or_out+  " AMount="+reciveAmnt);
+
+        db.close();
+    }
 
     public  void deleteRowFromDailyTable(long id)
     {
@@ -121,7 +141,9 @@ public class SQLiteAdapter
         }
 
         cursor.close();
-        String updatedAmount=(Integer.parseInt(datBaseAmount)-Integer.parseInt(reciveAmnt))+"";
+        int dataBaseAmountinInteger=Integer.parseInt(datBaseAmount);
+        int recievedAmountinInteger=Integer.parseInt(reciveAmnt);
+        String updatedAmount=(dataBaseAmountinInteger-recievedAmountinInteger)+"";
         String args[]={Long.toString(time_stamp), in_or_out+""};
         ContentValues contentValues=new ContentValues();
         contentValues.put(SQLiteHelper.AMOUNT, updatedAmount);
@@ -189,6 +211,64 @@ public class SQLiteAdapter
         cursor.close();
 
         return list;
+    }
+
+
+    public String getDataFromDailyTable(long filterId)
+    {
+        SQLiteDatabase db=sqLiteHelper.getWritableDatabase();
+
+//     select  Date, Category, Amount, Description from Table -> Incoming.
+        String[] allColumnsFrom_tableDaily={SQLiteHelper.UID,SQLiteHelper.DATE_TIME,SQLiteHelper.CATEGORY,SQLiteHelper.AMOUNT,SQLiteHelper.DESCRIPTION,SQLiteHelper.IN_OR_OUT};
+        Cursor cursor=db.rawQuery("SELECT * FROM "+SQLiteHelper.TABLE_NAME_DAILY+" WHERE "+SQLiteHelper.UID+" = "+filterId+" ;",null);
+
+
+        ///////////////////////////////
+        String date,category,amount,description,inOut="OUT", time="";
+        int uid, columnIndex_uid, columnIndex_date, columnIndex_category, columnIndex_Amount, columnIndex_Description, columnIndex_INOUT, columnIndex_TIME;
+        int in_or_out;
+        StringBuffer selectedTuple=new StringBuffer();
+
+
+        columnIndex_uid=cursor.getColumnIndex(sqLiteHelper.UID); //  gives index of UID i.e =0;
+        columnIndex_date=cursor.getColumnIndex(sqLiteHelper.DATE_TIME);
+        columnIndex_category=cursor.getColumnIndex(sqLiteHelper.CATEGORY);
+        columnIndex_Amount=cursor.getColumnIndex(sqLiteHelper.AMOUNT);
+        columnIndex_Description=cursor.getColumnIndex(sqLiteHelper.DESCRIPTION);
+        columnIndex_INOUT=cursor.getColumnIndex(sqLiteHelper.IN_OR_OUT);
+        columnIndex_TIME=cursor.getColumnIndex(sqLiteHelper.TIME);
+
+        while(cursor.moveToNext())
+        {
+//            fetching index of corresponding table table attributes.
+
+
+//            Retrieving values associated to the corresponding columnIndex of database table -one row at a time.
+            uid=cursor.getInt(columnIndex_uid);
+            date=cursor.getString(columnIndex_date);
+            category=cursor.getString(columnIndex_category);
+            amount=cursor.getString(columnIndex_Amount);
+            description=cursor.getString(columnIndex_Description);
+            in_or_out=cursor.getInt(columnIndex_INOUT);
+            time=cursor.getString(columnIndex_TIME);
+
+
+            //Message.message_longTime(context, description+" "+in_or_out+"\n");
+            if(in_or_out==1)
+                inOut="IN";
+            else
+                inOut="OUT";
+
+            selectedTuple.append(amount+"//"+date+"//"+category+"//"+description+"//"+inOut+"//"+time);
+
+
+        }
+
+//        Message.message(context, selectedTuple.toString());
+        db.close();
+        cursor.close();
+
+        return selectedTuple.toString();
     }
 
 
@@ -352,11 +432,12 @@ public class SQLiteAdapter
         private static final String IN_OR_OUT="in_or_out";
         private static final String TIME_STAMP="time_stamp";
         private static final String YEAR_MONTH="year_month";
+        private static final String TIME="time";
 
         //    create table money_calendar (_id primary key autoincrement,date_time,amount,description ,category)
         private static final String CREATE_TABLE_DAILY = "create table if not exists " + TABLE_NAME_DAILY + " (" + UID + " integer primary key autoincrement," +
                 "" + DATE_TIME + " date not null," + AMOUNT + " text not null," + DESCRIPTION + " varchar(60)," + CATEGORY + " text not null, "+IN_OR_OUT+" integer,"+TIME_STAMP+" integer not null, " +
-        YEAR_MONTH+ " text not null);";
+        YEAR_MONTH+ " text not null, "+TIME+" text not null);";
 
         //    create table money_calendar (_id primary key autoincrement,date_time,amount,description ,category)
         private static final String CREATE_TABLE_MONTHLY= "create table if not exists " + TABLE_NAME_MONTHLY + " (" + UID + " integer primary key autoincrement," +

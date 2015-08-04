@@ -2,6 +2,7 @@ package trees.money_calendar.com.moneycalander;
 
 
 
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,13 +10,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import java.util.Calendar;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.Class.CategoryClass;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.adapter.CategoryAdapter;
@@ -56,6 +57,20 @@ public class AddActivity extends ActionBarActivity implements View.OnClickListen
     * *
      */
 
+
+
+    //VARIABLE INTRODUCTION
+    /*
+    **
+    * -> radiobuttons: inflow and outflow are used to hold the incoming or outgoing money flag
+    * ->spinner: it is used to show the category listing
+    * ->addButton: for confirming add event, desButton: to trigger the description option, timeButton: for time picker
+    * ->EditText: year, month, days is used to make date:year/month/days, description: used to keep the description
+    * ->categoryName: used to keep the selected category of spinner
+    * ->appbar: this is used to put the app bar  in the app
+    * ->timeFragment: it is used to refer the time picker and take the time value set by it
+    * ->currentYr, curntMnth, curntDays, are used to store the current year month and current days
+*/
 
     ////JUST INITIALIZATION OF ALL THE VIEWS AND REQUIRED REFRENCES
     private RadioButton inFlowRadio, outFlowRadio;
@@ -344,7 +359,7 @@ public class AddActivity extends ActionBarActivity implements View.OnClickListen
 
 
                 SQLiteAdapter dbAdapter=new SQLiteAdapter(this);
-                dbAdapter.insertIntoDailyTable(amnt, categoryName, dscrptn, date, in_or_out,DateAndTimeStamp.returnTimeStamp(date+time), year_month);
+                dbAdapter.insertIntoDailyTable(amnt, categoryName, dscrptn, date, in_or_out,DateAndTimeStamp.returnTimeStamp(date+time), year_month, time);
                 dbAdapter.insertIntoMonthlyTable(amnt, DateAndTimeStamp.returnTimeStamp(date+" 00:00"), in_or_out, year_month);;
                // Message.message(this, date+time);
 
@@ -357,6 +372,9 @@ public class AddActivity extends ActionBarActivity implements View.OnClickListen
                 year.setText(curntYr+"");
                 month.setText(curntMnth+"");
                 days.setText(curntDays+"");
+
+                InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
                 Message.message(this, "ADDED SUCCESSFULLY");
 

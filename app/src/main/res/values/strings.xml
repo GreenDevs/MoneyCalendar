@@ -13,6 +13,7 @@
 
     <string name="graphRefresh">Refresh</string>
     <string name="delete">DELETE</string>
+    <string name="edit">EDIT</string>
 
 
     <string name="value_splash_movable_app_name">Money Calender</string>
@@ -21,6 +22,7 @@
 
 
     <string name="value_splash_crack_dev_copyright"> © Crack Developerz</string>
+    <string name="title_activity_edit">Edit</string>
 
 
 </resources>

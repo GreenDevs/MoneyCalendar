@@ -1,9 +1,11 @@
 package trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -12,13 +14,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import trees.money_calendar.com.moneycalander.EditActivity;
 import trees.money_calendar.com.moneycalander.MainActivity;
 import trees.money_calendar.com.moneycalander.R;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.Class.SingleRow;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.adapter.TransListAdapter;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.DateAndTimeStamp;
+import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.Message;
 import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycalander.database.SQLiteAdapter;
 
 /**
@@ -27,37 +33,48 @@ import trees.money_calendar.com.moneycalander.trees.money_calendar.com.moneycala
 public class TransictionList extends Fragment implements AbsListView.MultiChoiceModeListener
 {
 
-
-
     private ListView list;
     private Context context;
     private TransListAdapter transListAdapter;
-    private SQLiteAdapter adapter;
+    private SQLiteAdapter databaseAdapter;
+    private static final byte EDIT_MENU_ITEM_INDEX=1;
+    public static final String EDIT_DIALOG_TAG="edit_dialog_tag";
+    private ImageButton fabButton=null;
+
+
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       View v=inflater.inflate(R.layout.transiction,container,false);
-       init(v);
-       return v;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+
+        //getActivity().getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+
+        View v=inflater.inflate(R.layout.transiction,container,false);
+        init(v);
+
+        return v;
     }
+
+
 
 
     private void init(View v)
     {
         list=(ListView)v.findViewById(R.id.transiction_list);
         context=(Context)getActivity();
-        transListAdapter=new TransListAdapter(context);
+        transListAdapter = new TransListAdapter(context);
         list.setAdapter(transListAdapter);
-
-
 
 
         //############### Context Action Menu (MULTIPLE DELETE ACTION ON THE TRANSICATION LIST) ###################################
         list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         list.setMultiChoiceModeListener(this);               //Capture listView item click.
-    }
 
+        fabButton=((MainActivity) getActivity()).getFab();
+
+
+    }
 
 
     @Override
@@ -70,19 +87,35 @@ public class TransictionList extends Fragment implements AbsListView.MultiChoice
     }
 
 
-
-
     //########################################### MULTI CHOICE LISTENER METHODS #####################################
 
     @Override
     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked)
     {
+        Log.d("Tag","onItemCheckedStateChanged() called");
+
+        if(list.getCheckedItemCount()>0)
+        {
+            if(fabButton!=null) fabButton.setVisibility(View.GONE);
+        }
+        else
+        {
+            if(fabButton!=null) fabButton.setVisibility(View.VISIBLE);
+        }
+        if(list.getCheckedItemCount()==1)
+        {
+            mode.getMenu().getItem(EDIT_MENU_ITEM_INDEX).setVisible(true);
+        }
+
+        else
+        {
+            mode.getMenu().getItem(EDIT_MENU_ITEM_INDEX).setVisible(false);
+        }
 
 
         final int checkedCount = list.getCheckedItemCount();   //capture total checked items.
         mode.setTitle(checkedCount + "");                         //set The CAB title according to total checked items.
         transListAdapter.toggleSelection(position);             //calls toggleSelection from listview Adapter class.
-
 
 
     }
@@ -94,7 +127,10 @@ public class TransictionList extends Fragment implements AbsListView.MultiChoice
     public boolean onCreateActionMode(ActionMode mode, Menu menu)
     {
 
+
         mode.getMenuInflater().inflate(R.menu.delete, menu);
+        mode.getMenuInflater().inflate(R.menu.edit, menu);
+
         return true;
     }
 
@@ -115,53 +151,105 @@ public class TransictionList extends Fragment implements AbsListView.MultiChoice
     public boolean onActionItemClicked(ActionMode mode, MenuItem item)
     {
 
+        Log.d("Tag","onActionItemClicked() called");
         switch (item.getItemId())
         {
+
             case R.id.delete:
+                triggerDeleteSwitch();
+                break;
 
+            case R.id.edit:
+                triggerEditSwitch();
+                break;
 
-                adapter=new SQLiteAdapter(context);
-                long id, time_stamp;
-                int in_or_out;
-                String amount;
-
-                SparseBooleanArray selected = transListAdapter.getSelectedIds();        //calls getSelectedIds method from listView adapter class.
-                for (int i = (selected.size() - 1); i >= 0; i--)                        //captures all selected ids with a loop
-                {
-                    if (selected.valueAt(i))
-                    {
-                        SingleRow selectedItem = (SingleRow) transListAdapter.getItem(selected.keyAt(i));
-                        transListAdapter.remove(selectedItem);                         // remove selected items following the ids.
-
-                        ///############# DAILY TABLE DELETION ###################
-                        id=selectedItem.getId();
-                        adapter.deleteRowFromDailyTable(id);
-
-                        //############ MONTHLY TABLE UPDATE ####################
-                        time_stamp= DateAndTimeStamp.returnTimeStamp(selectedItem.getDate()+" 00:00");
-                        amount=selectedItem.getAmount();
-                        if(selectedItem.getFlow().equals("IN")) in_or_out=1;
-                        else in_or_out=0;
-                        adapter.updateIntoMonthlyTable(in_or_out, time_stamp, amount);
-
-
-
-                    }
-
-
-
-                }
-
-               mode.finish();
-//               ((MainActivity)getActivity()).getViewPager(1);
-               return true;
 
             default:
                 return false;
 
-        }
+        }//                                                                             switch closing.
+
+        mode.finish(); //                                                    CAB closing.
+        return true;
     }
 
+
+
+
+    public void triggerEditSwitch()
+    {
+
+        databaseAdapter=new SQLiteAdapter(context);
+        long id=0;
+        long time_stamp=0;
+        byte in_or_out=0;
+
+
+        SparseBooleanArray selected = transListAdapter.getSelectedIds();        //calls getSelectedIds method from listView adapter class.
+        for (int i = (selected.size() - 1); i >= 0; i--)                        //captures all selected ids with a loop
+        {
+            if (selected.valueAt(i))
+            {
+                SingleRow selectedItem = (SingleRow) transListAdapter.getItem(selected.keyAt(i));
+                                        // remove selected items following the ids.
+                //getting the database uid
+                id=selectedItem.getId();
+
+                //############ MONTHLY TABLE UPDATE ####################
+                time_stamp= DateAndTimeStamp.returnTimeStamp(selectedItem.getDate()+" 00:00");
+                if(selectedItem.getFlow().equals("IN")) in_or_out=1;
+                else in_or_out=0;
+//                databaseAdapter.updateIntoMonthlyTable(in_or_out, time_stamp, amount);
+
+
+            }
+
+        }
+
+        Bundle bundle=new Bundle();
+        bundle.putLong("uid", id);
+        bundle.putLong("time_stamp", time_stamp);
+        bundle.putByte("in_or_out", in_or_out);
+        Intent intent=new Intent(context,EditActivity.class);
+        intent.putExtra("maalkobundle", bundle);
+        startActivity(intent);
+        //idTransmission.transmit(11,999999990,0);
+    }
+
+
+
+    public void triggerDeleteSwitch()
+    {
+
+        databaseAdapter=new SQLiteAdapter(context);
+        long id, time_stamp;
+        int in_or_out;
+        String amount;
+
+        SparseBooleanArray selected = transListAdapter.getSelectedIds();        //calls getSelectedIds method from listView adapter class.
+        for (int i = (selected.size() - 1); i >= 0; i--)                        //captures all selected ids with a loop
+        {
+            if (selected.valueAt(i))
+            {
+                SingleRow selectedItem = (SingleRow) transListAdapter.getItem(selected.keyAt(i));
+                transListAdapter.remove(selectedItem);                         // remove selected items following the ids.
+
+                ///############# DAILY TABLE DELETION ###################
+                id=selectedItem.getId();
+                databaseAdapter.deleteRowFromDailyTable(id);
+
+                //############ MONTHLY TABLE UPDATE ####################
+                time_stamp= DateAndTimeStamp.returnTimeStamp(selectedItem.getDate()+" 00:00");
+                amount=selectedItem.getAmount();
+                if(selectedItem.getFlow().equals("IN")) in_or_out=1;
+                else in_or_out=0;
+                databaseAdapter.updateIntoMonthlyTable(in_or_out, time_stamp, amount);
+
+
+            }
+
+        }//                                                                     for loop closing.
+    }
 
 
 
@@ -171,6 +259,9 @@ public class TransictionList extends Fragment implements AbsListView.MultiChoice
     {
 
         transListAdapter.removeSelection();
+
+        fabButton.setVisibility(View.VISIBLE);
+
 
     }
 }

@@ -24,5 +24,24 @@ public class CategoryClass {
 
     public static final String MONTHS[] = {"jan", "feb", "mar", "apr", "may", "jun","jul", "aug", "sep", "oct", "nov", "dec"};
 
+    public static byte getCategoryPosition(String category)
+    {
+        if(category.equals(MISCAL))  return  0;
+        if(category.equals(GROC))  return  1;
+        if(category.equals(FOOD))  return  2;
+        if(category.equals(SHOP))  return  3;
+        if(category.equals(EDU))  return  4;
+        if(category.equals(PERSO))  return  5;
+        if(category.equals(MAINT))  return  6;
+        if(category.equals(ENTERT))  return  7;
+        if(category.equals(HEALTH))  return  8;
+        if(category.equals(TRAVEL))  return  9;
+        if(category.equals(SAVE))  return  10;
+        if(category.equals(HOME))  return  11;
+
+
+        return 0;
+    }
+
 
 }
